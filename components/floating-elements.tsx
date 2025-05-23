@@ -2,14 +2,26 @@
 
 import { motion } from "framer-motion"
 import { FileText, Shield, AlertTriangle, CheckCircle } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export default function FloatingElements() {
+  const [mounted, setMounted] = useState(false)
   const elements = [
     { icon: FileText, color: "text-[#F2EFE9]", delay: 0 },
     { icon: Shield, color: "text-[#F2EFE9]", delay: 0.5 },
     { icon: AlertTriangle, color: "text-[#F2EFE9]", delay: 1 },
     { icon: CheckCircle, color: "text-[#F2EFE9]", delay: 1.5 },
   ]
+
+  // Only access window after component has mounted on client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render anything during SSR or when not mounted
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
